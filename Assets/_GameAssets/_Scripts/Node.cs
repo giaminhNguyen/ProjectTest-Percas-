@@ -1,24 +1,22 @@
 using _GameAssets._Scripts;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Node : MonoBehaviour
 {
     #region Properties
-
-    public bool isBlocked;
-    public bool isWalked;
-    public Vector2Int passPosHalf;
     //Properties
-    public int FCost => GCost + HCost;
-    public int GCost { get; private set; }
-    public int HCost { get; private set; }
-    public bool IsWall { get; private set; }
-    public bool IsVisited { get;  set; }
-    public Vector2Int Position => _position;
-    public Node PreviousNode => _previousNode;
-    public bool IsCalculated { get; private set; }
+    public bool       IsBlocked    { get; set; }
+    public bool       IsWalked     { get; set; }
+    public Vector2Int PassPosHalf  { get; set; }
+    public int        FCost        => GCost + HCost;
+    public int        GCost        { get; private set; }
+    public int        HCost        { get; private set; }
+    public bool       IsWall       { get; private set; }
+    public bool       IsVisited    { get; set; }
+    public Vector2Int Position     => _position;
+    public Node       PreviousNode => _previousNode;
+    public bool       IsCalculated { get; private set; }
     //Serialized Field
     [SerializeField]
     private Image _imageNode;
@@ -37,9 +35,24 @@ public class Node : MonoBehaviour
     
     
     //private
-    private Node _previousNode;
-    private Vector2Int _position;
+    private Node       _previousNode;
+    public Vector2Int _position;
+    private bool       _isSelected;
     
+    #endregion
+
+    #region Unity Func
+
+    private void OnEnable()
+    {
+        EventManager.resetState += ResetState;
+    }
+    
+    private void OnDisable()
+    {
+        EventManager.resetState -= ResetState;
+    }
+
     #endregion
 
     #region Public Func
@@ -75,18 +88,25 @@ public class Node : MonoBehaviour
     public void OnSelected()
     {
         if(IsWall) return;
+        _isSelected = true;
         EventManager.onNodeSelected?.Invoke(this);
         _imageNode.color = _selectedColor;
     }
 
-    public void ResetColor()
+    public void ResetState()
     {
+        _isSelected      = false;
+        IsVisited        = false;
+        IsCalculated     = false;
+        _previousNode    = null;
+        IsBlocked        = false;
+        IsWalked         = false;
         _imageNode.color = IsWall ? _wallColor : _defaultColor;
     }
 
     public void IsPath()
     {
-        if(IsWall) return;
+        if(IsWall || _isSelected) return;
         _imageNode.color = _pathColor;
     }
 
