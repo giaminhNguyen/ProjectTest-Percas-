@@ -1,6 +1,5 @@
 using _GameAssets._Scripts;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Node : MonoBehaviour

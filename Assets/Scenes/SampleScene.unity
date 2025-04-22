@@ -1477,6 +1477,7 @@ MonoBehaviour:
   _sizeXInputField: {fileID: 974382852}
   _sizeYInputField: {fileID: 243246692}
   _size: {x: 35, y: 37}
+  _timeMove: 0.12
 --- !u!114 &1952690355
 MonoBehaviour:
   m_ObjectHideFlags: 0

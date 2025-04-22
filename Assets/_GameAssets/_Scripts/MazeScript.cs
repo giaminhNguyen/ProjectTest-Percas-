@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace _GameAssets._Scripts
         #region Properties
         //Properties
         private bool CanPathFinding => _isMazeGenerated && _startNode && _targetNode;
-
+        //Public
         //Serialized Filed
         [Header("References")]
         [SerializeField]
@@ -35,13 +36,16 @@ namespace _GameAssets._Scripts
         [Space(3)]
         [SerializeField]
         private Vector2Int _size;
-
         // Private
         public  Node[,]          _nodes;
         private Node             _startNode;
         private Node             _targetNode;
         private bool             _isMazeGenerated;
         private List<GameObject> _nodePool;
+        private List<Node>       _path;
+        private bool             _isRunPathAnim;
+        private int              _currentIndex;
+        private bool             _canMove;
         #endregion
 
 
@@ -77,6 +81,13 @@ namespace _GameAssets._Scripts
             CreateMap();
         }
 
+        private void LateUpdate()
+        {
+            MovePath();
+        }
+
+        
+
         #endregion
 
         
@@ -87,8 +98,9 @@ namespace _GameAssets._Scripts
         {
             if(string.IsNullOrEmpty(_sizeXInputField.text) || string.IsNullOrEmpty(_sizeYInputField.text))
                 return;
-            _size.x = int.Parse(_sizeXInputField.text);
-            _size.y = int.Parse(_sizeYInputField.text);
+            _isRunPathAnim = false;
+            _size.x        = int.Parse(_sizeXInputField.text);
+            _size.y        = int.Parse(_sizeYInputField.text);
             if (_size.x < 5 || _size.y < 5)
             {
                 Debug.LogError("Kích thước tối thiểu 1 cạnh là 5");
@@ -127,8 +139,9 @@ namespace _GameAssets._Scripts
 
                 return;
             }
-
-            _aStar.PathFinding(_startNode, _targetNode, _nodes, _size);
+            _path          = _aStar.PathFinding(_startNode, _targetNode, _nodes, _size);
+            _isRunPathAnim = true;
+            _currentIndex  = 0;
         }
 
         #endregion
@@ -139,8 +152,9 @@ namespace _GameAssets._Scripts
         {
             if (CanPathFinding)
             {
-                _startNode  = null;
-                _targetNode = null;
+                _startNode     = null;
+                _targetNode    = null;
+                _isRunPathAnim = false;
                 EventManager.resetState?.Invoke();
             }
 
@@ -159,6 +173,27 @@ namespace _GameAssets._Scripts
         #endregion
 
         #region Local Func
+        
+        private void MovePath()
+        {
+            if(!_isRunPathAnim) return;
+            _canMove = !_canMove;
+            if(!_canMove) return;
+            MoveNextPath_L();
+            MoveNextPath_L();
+            MoveNextPath_L();
+
+            void MoveNextPath_L()
+            {
+                _currentIndex++;
+                if (_currentIndex >= _path.Count)
+                {
+                    _isRunPathAnim = false;
+                    return;
+                }
+                _path[_currentIndex].IsPath();
+            }
+        }
 
         private void CreateGrid(Vector2Int sizeXY)
         {

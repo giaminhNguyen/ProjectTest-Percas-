@@ -9,7 +9,6 @@ namespace _GameAssets._Scripts
         private Node[,] _nodes;
         private List<Node> _openNodes;
         private Vector2Int _size;
-
         #endregion
 
         #region Unity Func
@@ -21,9 +20,9 @@ namespace _GameAssets._Scripts
 
         #endregion
         
-        public List<Vector2Int> PathFinding(Node start,Node target,Node[,] nodes,Vector2Int size)
+        public List<Node> PathFinding(Node start,Node target,Node[,] nodes,Vector2Int size)
         {
-            var path = new List<Vector2Int>();
+            var path = new List<Node>();
             _openNodes.Clear();
             _openNodes.Add(start);
             _nodes = nodes;
@@ -49,10 +48,10 @@ namespace _GameAssets._Scripts
                 {
                     while (currentNode != start)
                     {
-                        path.Add(currentNode.Position);
-                        currentNode.IsPath();
+                        path.Add(currentNode);
                         currentNode = currentNode.PreviousNode;
                     }
+                    path.Add(start);
                     path.Reverse();
                     break;
                 }
