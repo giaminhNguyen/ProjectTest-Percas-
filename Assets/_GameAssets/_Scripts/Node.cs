@@ -1,5 +1,6 @@
 using _GameAssets._Scripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Node : MonoBehaviour
@@ -26,10 +27,10 @@ public class Node : MonoBehaviour
     
     [SerializeField]
     private Color _defaultColor;
-    
     [SerializeField]
-    private Color _selectedColor;
-    
+    private Color _npcColor;
+    [SerializeField]
+    private Color _targetColor;
     [SerializeField]
     private Color _pathColor;
     
@@ -90,7 +91,17 @@ public class Node : MonoBehaviour
         if(IsWall) return;
         _isSelected = true;
         EventManager.onNodeSelected?.Invoke(this);
-        _imageNode.color = _selectedColor;
+        
+    }
+
+    public void IsNPC()
+    {
+        _imageNode.color = _npcColor;
+    }
+    
+    public void IsTarget()
+    {
+        _imageNode.color = _targetColor;
     }
 
     public void ResetState()

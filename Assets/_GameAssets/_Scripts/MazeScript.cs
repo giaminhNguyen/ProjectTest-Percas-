@@ -94,15 +94,14 @@ namespace _GameAssets._Scripts
                 Debug.LogError("Kích thước tối thiểu 1 cạnh là 5");
                 return;
             }
-
-            // if (_size.x % 2 == 0)
-            // {
-            //     _size.x++;
-            // }
-            // if (_size.y % 2 == 0)
-            // {
-            //     _size.y++;
-            // }
+            if (_size.x % 2 == 0)
+            {
+                _size.x++;
+            }
+            if (_size.y % 2 == 0)
+            {
+                _size.y++;
+            }
             _isMazeGenerated = false;
             EventManager.resetState?.Invoke();
             //
@@ -148,10 +147,12 @@ namespace _GameAssets._Scripts
             if (!_startNode)
             {
                 _startNode = node;
+                _startNode.IsNPC();
             }
             else
             {
                 _targetNode = node;
+                _targetNode.IsTarget();
             }
         }
 

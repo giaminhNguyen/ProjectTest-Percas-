@@ -90,10 +90,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _imageNode: {fileID: 6164412537679301725}
-  _wallColor: {r: 0, g: 0, b: 0, a: 1}
+  _wallColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   _defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  _selectedColor: {r: 0.13399053, g: 1, b: 0, a: 1}
+  _npcColor: {r: 0.061502814, g: 1, b: 0, a: 1}
+  _targetColor: {r: 1, g: 0, b: 0, a: 1}
   _pathColor: {r: 1, g: 0.7812411, b: 0, a: 1}
+  _position: {x: 0, y: 0}
 --- !u!114 &8933773533911989428
 MonoBehaviour:
   m_ObjectHideFlags: 0
